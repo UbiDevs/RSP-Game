@@ -16,17 +16,18 @@ class IsChoice:
     """
 
     isChoice: bool = False
-
+    
     @property
     def changeIsChoice(self):
         """
         Toggles the `isChoice` attribute between `True` and `False`.
 
-        This property is used to change the value of the `isChoice` attribute
-        to its opposite. For example, if `isChoice` is `True`, calling this
-        property will set `isChoice` to `False`, and vice versa.
+        This property is used to change the value of the `isChoice` attribute.
+        Each time this property is accessed, it will toggle the value of
+        `isChoice` from `True` to `False` or from `False` to `True`.
 
         Returns:
-            None
+            bool: The new value of `isChoice` after toggling.
         """
         self.isChoice = not self.isChoice
+        return self.isChoice

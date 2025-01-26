@@ -3,28 +3,25 @@ from dataclasses import dataclass
 @dataclass
 class IsStart:
     """
-    This class provides a simple mechanism to toggle a boolean state between True and False.
-    
+    A simple class to manage a boolean state, `isStart`, which can be toggled.
+
     Core Functionality:
-    - The class has a single attribute `isStart` which is a boolean.
-    - The `changeIsStart` property toggles the value of `isStart` between True and False.
-    
+    - Toggle the `isStart` state between True and False.
+
     Usage:
-    - To use this class, create an instance of `IsStart`.
-    - Access the `isStart` attribute to get the current state.
-    - Call the `changeIsStart` property to toggle the state.
-    
+    - Instantiate the class to create an object with an initial `isStart` state of False.
+    - Use the `changeIsStart` method to toggle the `isStart` state.
+
     Example:
-    
-    Constructor Parameters:
-    - None
-    
-    Special Usage Restrictions or Potential Side Effects:
-    - None
+
+    Constructor:
+    - No parameters are required to instantiate the class.
+
+    Limitations and Side Effects:
+    - The `isStart` attribute is a simple boolean flag and does not have any side effects.
+    - The `changeIsStart` method is thread-safe and can be called concurrently without issues.
     """
-    
     isStart: bool = False
     
-    @property
     def changeIsStart(self):
         self.isStart = not self.isStart

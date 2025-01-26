@@ -1,28 +1,29 @@
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 @dataclass(frozen = True)
 class Colors:
     """
-    The Colors class provides a set of predefined color constants, which can be used throughout the application.
-    These colors can be represented as either a string name or a tuple of RGB values.
+    The Colors class provides predefined color constants in both string and RGB tuple formats.
 
-    Core Features:
-    - Defines a set of color constants.
-    - Supports both string and RGB tuple representations for colors.
+    Core Functionality:
+    - Defines color constants in both string and RGB tuple formats.
 
-    Example Usage:
+    Usage:
+    - This class is intended to be used as a reference for color constants in your application.
+    - It can be imported and used directly to access predefined colors.
+
+    Example:
 
     Constructor Parameters:
-    - frozen (bool): A boolean flag indicating whether the class should be frozen. If True, the class cannot be modified after instantiation.
+    - None
 
-    Usage Limitations:
-    - The class is designed to be immutable, meaning that once an instance is created, its attributes cannot be changed.
-    - The class is not designed to be subclassed or extended.
+    Special Usage Restrictions:
+    - This class does not have any constructor parameters.
+    - It is a static class that provides read-only access to predefined color constants.
 
     Potential Side Effects:
-    - If the frozen parameter is set to False, the class can be modified after instantiation, which may lead to unexpected behavior in the application.
+    - None
     """
-    white: str | tuple[int, int, int] = field(default = 'white')
-    yellow: str | tuple[int, int, int] = field(default = 'yellow')
-
+    white: str | tuple[int, int, int] = 'white'
+    yellow: str | tuple[int, int, int] = 'yellow'
 

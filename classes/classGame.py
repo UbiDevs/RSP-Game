@@ -1,72 +1,66 @@
 import pygame as pg
-from pygame.locals import *
+from pygame.locals import QUIT, KEYDOWN, K_ESCAPE
 
-from config.createObjects import scr, btnStart, btnRock, btnScissors, btnPaper, isStart, isChoice, rotationCounter, roundsCounter, soundGame, scores
+from config.createObjects import scr, btnGroup, isStart, isChoice, rotationCounter, roundsCounter, scores, soundGame, player, computer
 
-from function.functionStartScreen import startScreen
-from function.functionChoiceScreen import choiceScreen
-from function.functionRotationScreen import rotationScreen
-from function.functionRoundScreen import roundScreen
-from function.functionCreateText import createText
-from function.functionWinScreen import winScreen
+
+from functions.functionStartScreen import startScreen
+from functions.functionsChoiceScreen import choiceScreen
+from functions.functionsRotationScreen import rotationScreen
+from functions.functionCreateText import createText
+from functions.functionRoundScreen import roundScreen
+from functions.functionWinScreen import winScreen
+
 
 class Game:
     """
-    The Game class is responsible for managing the main game loop and handling user interactions.
-    It initializes the game state, processes events, and updates the game screen accordingly.
-
+    The Game class manages the main game loop and handles user interactions.
+    
     Core functionalities:
     - Initializes game state and background music.
-    - Handles user events such as quitting the game or making choices.
-    - Manages the game flow, including start screen, choice screen, rotation screen, and round screen.
-    - Updates the game screen and handles game logic such as counting down, updating scores, and displaying victory screens.
-
-    Usage:
-    To use this class, create an instance of the Game class and call the runGame method to start the game loop.
-    The class expects certain objects and variables to be defined in the global scope, such as:
-    - pg: The Pygame module.
-    - soundGame: An object with methods to play background music and game sounds.
-    - btnStart, btnRock, btnScissors, btnPaper: Objects representing the start and choice buttons.
-    - isStart, isChoice: Objects representing the game start and choice states.
-    - rotationCounter, roundsCounter: Objects representing the rotation and rounds counters.
-    - scr: An object representing the screen, with attributes win (the window surface) and color (the background color).
-    - scores: An object representing the player and computer scores.
-
-    Example:
+    - Processes events such as quitting the game or handling button presses.
+    - Runs the game loop, updating the screen and handling game logic.
+    
+    Example usage:
+    game = Game()
+    game.runGame()
+    
+    Constructor parameters:
+    - None
+    
+    Usage limitations:
+    - The class assumes that the necessary Pygame modules and objects (e.g., pg, btnStart, btnRock, btnScissors, btnPaper, isStart, isChoice, rotationCounter, roundsCounter, scores, scr) are already initialized and available.
+    - The class assumes that the necessary sound files and screen settings are correctly configured.
     """
 
     def __init__(self):
+        # Initialize the game
         self.run = True
+        # Create a clock object to control the frame rate
         self.clock = pg.time.Clock()
-        soundGame.playBackgroundMusic(backMusic='sounds/background_music.mp3')
+        # Play the background music
+        soundGame.playBackgroundMusic('sounds/background_music.mp3')
 
     def eventGame(self):
         # Get all events from the event queue
         for event in pg.event.get():
             # If the event is a quit event or the escape key is pressed, set the run variable to False
-            if event.type == pg.QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
+            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_ESCAPE):
                 self.run = False
 
-            # Handle events for the start button
-            btnStart.handleEvent(event)
-            # Handle events for the rock button
-            btnRock.handleEvent(event)
-            # Handle events for the scissors button
-            btnScissors.handleEvent(event)
-            # Handle events for the paper button
-            btnPaper.handleEvent(event)
+            for btn in btnGroup:
+                # If the button is clicked, call the handleEvent method of the button
+                btn.handleEvent(event)
 
     def runGame(self):
         # Run the game while the run variable is True
         while self.run:
             # Fill the screen with the color specified in the screen class
             scr.win.fill(scr.color)
-
             # Call the eventGame method to handle events
             self.eventGame()
-
             # Call the createText method to create text on the screen
-            createText()
+            createText() 
 
             # If the isStart variable is False, call the startScreen method
             if not isStart.isStart:
@@ -80,15 +74,21 @@ class Game:
                 if rotationCounter.counter > 0:
                     # If the rotationCounter variable is even, play the counting_down sound
                     if rotationCounter.counter % 2 == 0:
-                        soundGame.playGameSound(sound='sounds/counting_down.mp3')
+                        soundGame.playGameSound('sounds/counting_down.mp3')
                     # Call the rotationScreen method
                     rotationScreen()
+                    # Decrease the rotationCounter variable
                     rotationCounter.decreaseCounter
+                    # Update the display
                     pg.display.update()
+                    # Delay for 500 milliseconds
                     pg.time.delay(500)
+                # If the rotationCounter variable is 0, call the roundScreen method
                 else:
+                    # If the roundsCounter variable is greater than 0, decrease the roundsCounter variable
                     if roundsCounter.rounds > 0:
                         roundsCounter.decreaseRounds
+                    # Reset the rotationCounter variable to 6
                     rotationCounter.counter = 6
                     isChoice.changeIsChoice
                     scr.win.fill(scr.color)
@@ -96,17 +96,22 @@ class Game:
                     createText()
                     pg.display.update()
                     pg.time.delay(2000)
+                    player.playerChoice = False
+                    computer.playerChoice = False
 
             if roundsCounter.rounds <= 0:
                 scr.win.fill(scr.color)
-                soundGame.playGameSound(sound='sounds/victory.mp3')
+                pg.mixer.music.pause()
+                soundGame.playGameSound('sounds/victory.mp3')
                 winScreen()
                 createText()
                 pg.display.update()
-                pg.time.delay(2000)
-                isStart.changeIsStart
+                pg.time.delay(3500)
+                pg.mixer.music.unpause()
                 roundsCounter.rounds = 5
+                isStart.changeIsStart()
                 scores.playerScore = 0
                 scores.computerScore = 0
+
 
             pg.display.update()

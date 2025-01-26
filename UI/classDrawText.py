@@ -25,7 +25,7 @@ class DrawText:
     color: str | tuple[int, int, int] = 'white'
     font: object = None
     pos: tuple = (0, 0)
-    
+
     def __post_init__(self, text: str):
         """
         Initializes the text attribute.
@@ -34,11 +34,12 @@ class DrawText:
             text (str): The text to be displayed.
         """
         self.text = text if type(text) == str else str(text)
-        
-    
+
     def update(self):
         """
         Renders and displays the text on the screen.
         """
+        # Render the text with the specified font, color, and anti-aliasing
         self.textView = self.font.render(self.text, True, self.color)
-        self.screen.blit(self.textView, self.pos)
+        # Blit the rendered text to the screen at the specified position
+        self.screen.blit(self.textView, (self.pos))

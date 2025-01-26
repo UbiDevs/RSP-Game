@@ -15,7 +15,7 @@ class Scores:
 
     playerScore: int = 0
     computerScore: int = 0
-
+    
     def changeScores(self, playerScore = 0, computerScore = 0):
         """
         Updates the scores of the player and the computer.

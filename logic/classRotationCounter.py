@@ -1,12 +1,15 @@
+
 from dataclasses import dataclass
+
 
 @dataclass
 class RotationCounter:
     """
-    The RotationCounter class is designed to manage a counter that starts at a specified value and can be decreased by a method.
+    RotationCounter is a class designed to keep track of a counter value that can be increased or decreased.
     
     Core Functionality:
-    - Decrease the counter by 1 if it is greater than 0.
+    - Keeps track of a counter value.
+    - Decreases the counter value by 1 if it is greater than 0.
     
     Example Usage:
     
@@ -14,11 +17,9 @@ class RotationCounter:
     - No constructor parameters are required.
     
     Limitations and Side Effects:
-    - The counter cannot be increased directly. It can only be decreased.
-    - The counter will never go below 0.
+    - The counter value cannot be set to a negative number.
     """
-    
-    counter: int = 6
+    counter: int = 0
     
     @property
     def decreaseCounter(self):
