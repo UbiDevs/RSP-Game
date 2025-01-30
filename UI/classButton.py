@@ -104,32 +104,8 @@ class Button:
             """
             Check if the left mouse button is pressed and if the mouse is within the rectangle.
             """
-            if event.button == 1 and self.rect.collidepoint(event.pos):
+            if event.button == 1 and self.isHovered:
                 self.isClicked = True
+                self.isClicked = not self.isClicked
                 if self.onClickReferences:
-                    self.clickEvent()
-        elif event.type == MOUSEBUTTONUP:
-            """
-            Set the isClicked flag to False when the left mouse button is released.
-            """
-            self.isClicked = False
-
-    def clickEvent(self):
-        """
-        Handle the click event based on the presence of positional and keyword arguments.
-
-        This method checks if there are positional arguments (`referenceArgs`) and/or keyword arguments
-        (`referenceKwargs`) and calls the `onClickReferences` method accordingly. If both are present, it
-        calls `onClickReferences` with both types of arguments. If only positional arguments are present,
-        it calls `onClickReferences` with positional arguments. If only keyword arguments are present,
-        it calls `onClickReferences` with keyword arguments. If neither are present, it calls
-        `onClickReferences` without any arguments.
-        """
-        if self.referenceArgs and not self.referenceKwargs:
-            self.onClickReferences(*self.referenceArgs)
-        elif self.referenceKwargs and not self.referenceArgs:
-            self.onClickReferences(**self.referenceKwargs)
-        elif self.referenceArgs and self.referenceKwargs:
-            self.onClickReferences(*self.referenceArgs, **self.referenceKwargs)
-        else:
-            self.onClickReferences()
+                    self.onClickReferences(*self.referenceArgs, **self.referenceKwargs)
